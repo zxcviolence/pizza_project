@@ -15,11 +15,23 @@ const Home = () => {
   const [items, setItems] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [currentPage, setCurrentPage] = React.useState(1);
+  const [catId, setCatId] = React.useState(0);
+  const [sort, setSort] = React.useState({
+    name: "популярности",
+    sortProperty: "rating",
+  });
   const categoryId = useSelector((state) => state.filter.categoryId);
 
   React.useEffect(() => {
+    setLoading(true);
+
+    const order = sort.sortProperty.includes("-") ? "asc" : "desc";
+    const sortBy = sort.sortProperty.replace("-", "");
+    const category = catId > 0 ? `category=${catId}` : "";
+    const page = `${currentPage}&limit=4`;
+
     fetch(
-      `https://64046c0c80d9c5c7bac766df.mockapi.io/items?page=${currentPage}&limit=4`
+      `https://64046c0c80d9c5c7bac766df.mockapi.io/items?${category}&sortBy=${sortBy}&order=${order}&page=${page}`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -28,7 +40,7 @@ const Home = () => {
         window.scrollTo(0, 0);
       })
       .catch((error) => alert({ error: error.message }));
-  }, [currentPage]);
+  }, [catId, sort, search, currentPage]);
 
   const onChangeCategory = (id) => {
     dispatch(setCategoryId(id));
@@ -49,8 +61,11 @@ const Home = () => {
   return (
     <>
       <div className="content__top">
-        <Categories />
-        <Sort />
+        <Categories
+          value={catId}
+          onClickCategory={(index) => setCatId(index)}
+        />
+        <Sort sortValue={sort} onChangeSort={(index) => setSort(index)} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{loading ? sceleton : pizzas}</div>
