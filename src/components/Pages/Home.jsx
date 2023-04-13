@@ -11,23 +11,22 @@ import Sort from "../Sort";
 const Home = () => {
   const dispatch = useDispatch();
 
+  const { categoryId, sort } = useSelector((state) => state.filter);
+
   const { search } = React.useContext(SearchContext);
+
   const [items, setItems] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [currentPage, setCurrentPage] = React.useState(1);
-  const [catId, setCatId] = React.useState(0);
-  const [sort, setSort] = React.useState({
-    name: "популярности",
-    sortProperty: "rating",
-  });
-  const categoryId = useSelector((state) => state.filter.categoryId);
+
+  const sortType = sort.sortProperty;
 
   React.useEffect(() => {
     setLoading(true);
 
-    const order = sort.sortProperty.includes("-") ? "asc" : "desc";
-    const sortBy = sort.sortProperty.replace("-", "");
-    const category = catId > 0 ? `category=${catId}` : "";
+    const order = sortType.includes("-") ? "asc" : "desc";
+    const sortBy = sortType.replace("-", "");
+    const category = categoryId > 0 ? `category=${categoryId}` : "";
     const page = `${currentPage}&limit=4`;
 
     fetch(
@@ -39,12 +38,14 @@ const Home = () => {
         setLoading(false);
         window.scrollTo(0, 0);
       })
-      .catch((error) => alert({ error: error.message }));
-  }, [catId, sort, search, currentPage]);
+      .catch((error) => alert("Error: " + error.message));
+  }, [categoryId, sortType, search, currentPage]);
 
   const onChangeCategory = (id) => {
     dispatch(setCategoryId(id));
   };
+
+  console.log(categoryId);
 
   const sceleton = [...new Array(4)].map((_, index) => (
     <Skeleton key={index} />
@@ -61,11 +62,8 @@ const Home = () => {
   return (
     <>
       <div className="content__top">
-        <Categories
-          value={catId}
-          onClickCategory={(index) => setCatId(index)}
-        />
-        <Sort sortValue={sort} onChangeSort={(index) => setSort(index)} />
+        <Categories value={categoryId} onChangeCategory={onChangeCategory} />
+        <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{loading ? sceleton : pizzas}</div>

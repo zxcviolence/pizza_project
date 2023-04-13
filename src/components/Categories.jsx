@@ -1,6 +1,6 @@
 import React from "react";
 
-function Categories({ value, onClickCategory }) {
+function Categories({ value, onChangeCategory }) {
   const categories = [
     "Все",
     "Мясные",
@@ -17,7 +17,7 @@ function Categories({ value, onClickCategory }) {
           return (
             <li
               key={index}
-              onClick={() => onClickCategory(index)}
+              onClick={() => onChangeCategory(index)}
               className={value === index ? "active" : null}
             >
               {item}

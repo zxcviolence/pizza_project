@@ -1,19 +1,24 @@
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setSort } from "../features/filterSlice";
 
-function Sort({ sortValue, onChangeSort }) {
+const list = [
+  { name: "популярности (По убыванию)", sortProperty: "rating" },
+  { name: "популярности (По возрастанию)", sortProperty: "-rating" },
+  { name: "цене (По убыванию)", sortProperty: "price" },
+  { name: "цене (По возрастанию)", sortProperty: "-price" },
+  { name: "алфавиту (По убыванию)", sortProperty: "title" },
+  { name: "алфавиту (По возрастанию)", sortProperty: "-title" },
+];
+
+function Sort() {
+  const dispatch = useDispatch();
+  const sort = useSelector((state) => state.filter.sort);
+
   const [open, setOpen] = React.useState(false);
 
-  const list = [
-    { name: "популярности (По убыванию)", sortProperty: "rating" },
-    { name: "популярности (По возрастанию)", sortProperty: "-rating" },
-    { name: "цене (По убыванию)", sortProperty: "price" },
-    { name: "цене (По возрастанию)", sortProperty: "-price" },
-    { name: "алфавиту (По убыванию)", sortProperty: "title" },
-    { name: "алфавиту (По возрастанию)", sortProperty: "-title" },
-  ];
-
-  const handleSelect = (index) => {
-    onChangeSort(index);
+  const handleSelect = (obj) => {
+    dispatch(setSort(obj));
     setOpen(false);
   };
 
@@ -33,7 +38,7 @@ function Sort({ sortValue, onChangeSort }) {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={() => setOpen(!open)}>{sortValue.name}</span>
+        <span onClick={() => setOpen(!open)}>{sort.name}</span>
       </div>
       {open && (
         <div className="sort__popup">
@@ -44,9 +49,7 @@ function Sort({ sortValue, onChangeSort }) {
                   key={index}
                   onClick={() => handleSelect(item)}
                   className={
-                    sortValue.sortProperty === item.sortProperty
-                      ? "active"
-                      : null
+                    sort.sortProperty === item.sortProperty ? "active" : null
                   }
                 >
                   {item.name}
