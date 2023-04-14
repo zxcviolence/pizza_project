@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { SearchContext } from "../../App";
 import { setCategoryId } from "../../features/filterSlice";
@@ -29,16 +30,15 @@ const Home = () => {
     const category = categoryId > 0 ? `category=${categoryId}` : "";
     const page = `${currentPage}&limit=4`;
 
-    fetch(
-      `https://64046c0c80d9c5c7bac766df.mockapi.io/items?${category}&sortBy=${sortBy}&order=${order}&page=${page}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setItems(data);
+    axios
+      .get(
+        `https://64046c0c80d9c5c7bac766df.mockapi.io/items?${category}&sortBy=${sortBy}&order=${order}&page=${page}`
+      )
+      .then((res) => {
+        setItems(res.data);
         setLoading(false);
-        window.scrollTo(0, 0);
-      })
-      .catch((error) => alert("Error: " + error.message));
+      });
+    window.scrollTo(0, 0);
   }, [categoryId, sortType, search, currentPage]);
 
   const onChangeCategory = (id) => {
