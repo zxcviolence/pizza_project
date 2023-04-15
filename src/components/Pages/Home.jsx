@@ -1,31 +1,38 @@
 import React from "react";
 import axios from "axios";
+import qs from "qs";
 import { useDispatch, useSelector } from "react-redux";
 import { SearchContext } from "../../App";
-import { setCategoryId, setCurrentPage } from "../../features/filterSlice";
+import {
+  setCategoryId,
+  setCurrentPage,
+  setFilters,
+} from "../../features/filterSlice";
+import { useNavigate } from "react-router-dom";
 import Categories from "../Categories";
 import Pagination from "../Pagination";
 import PizzaBlock from "../PizzaBlock";
 import Skeleton from "../PizzaBlock/Skeleton";
-import Sort from "../Sort";
+import Sort, { list } from "../Sort";
 
 const Home = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { categoryId, sort, currentPage } = useSelector((state) => state.filter);
-
+  const { categoryId, sort, currentPage } = useSelector(
+    (state) => state.filter
+  );
   const { search } = React.useContext(SearchContext);
-
   const [items, setItems] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
+  const isSearch = React.useRef(false);
+  const isMounted = React.useRef(false);
 
-  const sortType = sort.sortProperty;
-
-  React.useEffect(() => {
+  const fetchPizzas = () => {
     setLoading(true);
 
-    const order = sortType.includes("-") ? "asc" : "desc";
-    const sortBy = sortType.replace("-", "");
+    const order = sort.sortProperty.includes("-") ? "asc" : "desc";
+    const sortBy = sort.sortProperty.replace("-", "");
     const category = categoryId > 0 ? `category=${categoryId}` : "";
     const page = `${currentPage}&limit=4`;
 
@@ -38,17 +45,54 @@ const Home = () => {
         setLoading(false);
       });
     window.scrollTo(0, 0);
-  }, [categoryId, sortType, search, currentPage]);
+  };
 
   const onChangeCategory = (id) => {
     dispatch(setCategoryId(id));
   };
 
-  const onChangePage = (number) => {
-    dispatch(setCurrentPage(number))
+  const onChangePage = (page) => {
+    dispatch(setCurrentPage(page));
   };
 
-  console.log(categoryId);
+  // Если был первый рендер, то запрашиваем пиццы
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+    if (!isSearch.current) {
+      fetchPizzas();
+    }
+    isSearch.current = false;
+  }, [categoryId, sort.sortProperty, search, currentPage]);
+
+  // Если был первый рендер, то проверяем URL-параметры и сохраняем в redux
+  React.useEffect(() => {
+    if (window.location.search) {
+      const params = qs.parse(window.location.search.substring(1));
+
+      const sort = list.find((obj) => obj.sortProperty === params.sortProperty);
+
+      dispatch(
+        setFilters({
+          ...params,
+          sort,
+        })
+      );
+      isSearch.current = true;
+    }
+  }, []);
+
+  // Если изменили параметры и был первый рендер
+  React.useEffect(() => {
+    if (isMounted.current) {
+      const queryString = qs.stringify({
+        sortProperty: sort.sortProperty,
+        categoryId,
+        currentPage,
+      });
+      navigate(`?${queryString}`);
+    }
+    isMounted.current = true;
+  }, [categoryId, sort.sortProperty, currentPage]);
 
   const sceleton = [...new Array(4)].map((_, index) => (
     <Skeleton key={index} />
