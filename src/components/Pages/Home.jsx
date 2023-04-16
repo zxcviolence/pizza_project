@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import axios from "axios";
 import qs from "qs";
@@ -61,6 +62,7 @@ const Home = () => {
     if (!isSearch.current) {
       fetchPizzas();
     }
+
     isSearch.current = false;
   }, [categoryId, sort.sortProperty, search, currentPage]);
 
@@ -68,15 +70,14 @@ const Home = () => {
   React.useEffect(() => {
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1));
-
       const sort = list.find((obj) => obj.sortProperty === params.sortProperty);
-
       dispatch(
         setFilters({
           ...params,
           sort,
         })
       );
+
       isSearch.current = true;
     }
   }, []);
@@ -91,6 +92,7 @@ const Home = () => {
       });
       navigate(`?${queryString}`);
     }
+
     isMounted.current = true;
   }, [categoryId, sort.sortProperty, currentPage]);
 
