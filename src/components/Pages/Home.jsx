@@ -47,9 +47,9 @@ const Home = () => {
       setLoading(false);
       console.log(error);
     }
-    
-    window.scrollTo(0, 0);
 
+    window.scrollTo(0, 0);
+  };
   const onChangeCategory = (id) => {
     dispatch(setCategoryId(id));
   };
