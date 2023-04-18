@@ -29,7 +29,7 @@ const Home = () => {
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
 
-  const fetchPizzas = () => {
+  const fetchPizzas = async () => {
     setLoading(true);
 
     const order = sort.sortProperty.includes("-") ? "asc" : "desc";
@@ -37,16 +37,18 @@ const Home = () => {
     const category = categoryId > 0 ? `category=${categoryId}` : "";
     const page = `${currentPage}&limit=4`;
 
-    axios
-      .get(
+    try {
+      const res = await axios.get(
         `https://64046c0c80d9c5c7bac766df.mockapi.io/items?${category}&sortBy=${sortBy}&order=${order}&page=${page}`
-      )
-      .then((res) => {
-        setItems(res.data);
-        setLoading(false);
-      });
+      );
+      setItems(res.data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+    
     window.scrollTo(0, 0);
-  };
 
   const onChangeCategory = (id) => {
     dispatch(setCategoryId(id));
