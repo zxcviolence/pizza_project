@@ -39,6 +39,12 @@ const basketSlice = createSlice({
   },
 });
 
-export const { addItem, removeItem, minusItem, clearItems } = basketSlice.actions;
+export const selectBasket = (state) => state.basket; // Селектор
+
+export const selectBasketItemById = (id) => (state) =>
+  state.basket.items.find((obj) => obj.id === id);
+
+export const { addItem, removeItem, minusItem, clearItems } =
+  basketSlice.actions;
 
 export default basketSlice.reducer;

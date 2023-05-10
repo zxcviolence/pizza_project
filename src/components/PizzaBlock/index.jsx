@@ -1,14 +1,12 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem } from "../../features/basketSlice";
+import { addItem, selectBasketItemById } from "../../features/basketSlice";
 
 const typeNames = ["тонкое", "традиционное"];
 
 const PizzaBlock = ({ id, title, price, imageUrl, types, sizes }) => {
   const dispatch = useDispatch();
-  const basketItem = useSelector((state) =>
-    state.basket.items.find((obj) => obj.id === id)
-  );
+  const basketItem = useSelector(selectBasketItemById(id));
   const [activeType, setActiveType] = React.useState(0);
   const [activeSize, setActiveSize] = React.useState(0);
 
