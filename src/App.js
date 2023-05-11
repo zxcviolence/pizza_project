@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import Home from "./components/Pages/Home";
 import NotFound from "./components/Pages/NotFoundBlock";
 import Basket from "./components/Pages/Basket";
+import FullPizza from "./components/Pages/FullPizza";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/basket" element={<Basket />} />
             <Route path="*" element={<NotFound />} />
+            <Route path="/pizza/:id" element={<FullPizza />} />
           </Routes>
         </div>
       </div>

@@ -2,14 +2,13 @@
 import React from "react";
 import qs from "qs";
 import { useDispatch, useSelector } from "react-redux";
-import { SearchContext } from "../../App";
 import {
   selectFilter,
   setCategoryId,
   setCurrentPage,
   setFilters,
 } from "../../features/filterSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Categories from "../Categories";
 import Pagination from "../Pagination";
 import PizzaBlock from "../PizzaBlock";
@@ -102,7 +101,11 @@ const Home = () => {
       }
       return false;
     })
-    .map((obj) => <PizzaBlock key={obj.id} {...obj} />);
+    .map((obj) => (
+      <Link key={obj.id} to={`/pizza/${obj.id}`}>
+        <PizzaBlock {...obj} />
+      </Link>
+    ));
 
   return (
     <>
