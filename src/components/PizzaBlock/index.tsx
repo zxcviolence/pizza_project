@@ -4,7 +4,16 @@ import { addItem, selectBasketItemById } from "../../features/basketSlice";
 
 const typeNames = ["тонкое", "традиционное"];
 
-const PizzaBlock = ({ id, title, price, imageUrl, types, sizes }) => {
+type PizzaBlockProps = {
+  id: string;
+  title: string;
+  types: number[];
+  sizes: number[];
+  price: number;
+  imageUrl: string;
+}
+
+const PizzaBlock: React.FC<PizzaBlockProps> = ({ id, title, price, imageUrl, types, sizes }) => {
   const dispatch = useDispatch();
   const basketItem = useSelector(selectBasketItemById(id));
   const [activeType, setActiveType] = React.useState(0);

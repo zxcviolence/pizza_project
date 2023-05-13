@@ -2,9 +2,9 @@ import React from "react";
 import empty from "../assets/img/empty-cart.png";
 import { Link } from "react-router-dom";
 
-const BasketEmpty = () => {
+const BasketEmpty: React.FC = () => {
   return (
-    <div class="cart cart--empty">
+    <div className="cart cart--empty">
       <h2>
         Корзина пустая <span>😕</span>
       </h2>
@@ -14,7 +14,7 @@ const BasketEmpty = () => {
         Для того, чтобы заказать пиццу, перейди на главную страницу.
       </p>
       <img src={empty} alt="Empty cart" />
-      <Link to="/" class="button button--black">
+      <Link to="/" className="button button--black">
         <span>Вернуться назад</span>
       </Link>
     </div>

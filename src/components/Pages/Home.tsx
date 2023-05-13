@@ -16,7 +16,7 @@ import Skeleton from "../PizzaBlock/Skeleton";
 import Sort, { list } from "../Sort";
 import { fetchPizzas, selectPizzaData } from "../../features/pizzaSlice";
 
-const Home = () => {
+const Home: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -33,6 +33,7 @@ const Home = () => {
     const searchValue = search ? `&search=${search}` : "";
 
     dispatch(
+      // @ts-ignore
       fetchPizzas({
         order,
         category,
@@ -45,11 +46,11 @@ const Home = () => {
     window.scrollTo(0, 0);
   };
 
-  const onChangeCategory = (id) => {
+  const onChangeCategory = (id: number) => {
     dispatch(setCategoryId(id));
   };
 
-  const onChangePage = (page) => {
+  const onChangePage = (page: number) => {
     dispatch(setCurrentPage(page));
   };
 
@@ -95,13 +96,13 @@ const Home = () => {
     <Skeleton key={index} />
   ));
   const pizzas = items
-    .filter((pizza) => {
+    .filter((pizza: any) => {
       if (pizza.title.toLowerCase().includes(search.toLowerCase())) {
         return true;
       }
       return false;
     })
-    .map((obj) => (
+    .map((obj: any) => (
       <Link key={obj.id} to={`/pizza/${obj.id}`}>
         <PizzaBlock {...obj} />
       </Link>
