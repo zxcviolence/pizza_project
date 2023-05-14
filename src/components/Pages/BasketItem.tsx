@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { addItem, minusItem, removeItem } from "../../features/basketSlice";
+import { BasketItem, addItem, minusItem, removeItem } from "../../features/basketSlice";
 
 type BasketItemProps = {
   id: string;
@@ -12,10 +12,10 @@ type BasketItemProps = {
   imageUrl: string;
 }
 
-const BasketItem: React.FC<BasketItemProps> = ({ id, title, size, type, price, count, imageUrl }) => {
+const BasketItemBlock: React.FC<BasketItemProps> = ({ id, title, size, type, price, count, imageUrl }) => {
   const dispatch = useDispatch();
   const onClickPlus = () => {
-    dispatch(addItem({ id }));
+    dispatch(addItem({ id } as BasketItem));
   };
   const onClickMinus = () => {
     dispatch(minusItem(id));
@@ -109,4 +109,4 @@ const BasketItem: React.FC<BasketItemProps> = ({ id, title, size, type, price, c
   );
 };
 
-export default BasketItem;
+export default BasketItemBlock;
