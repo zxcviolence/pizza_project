@@ -17,13 +17,13 @@ const Search: React.FC = () => {
   };
 
   const updateSearchValue = React.useCallback(
-    debounce((str) => {
+    debounce((str: string) => {
       dispatch(setSearch(str));
     }, 1000),
     []
   );
 
-  const onChangeInput = (event: any) => {
+  const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
     updateSearchValue(event.target.value);
   };
