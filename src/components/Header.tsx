@@ -1,3 +1,4 @@
+import React from "react";
 import logoSVG from "../assets/img/pizza-logo.svg";
 import { Link } from "react-router-dom";
 import Search from "./Search/index";
@@ -6,7 +7,16 @@ import { selectBasket } from "../features/basketSlice";
 
 function Header() {
   const { items, totalPrice } = useSelector(selectBasket);
+  const isMounted = React.useRef(false)
   const totalCount = items.reduce((sum: number, item: any) => sum + item.count, 0);
+
+  React.useEffect(() => {
+    if (isMounted.current) {
+      const json = JSON.stringify(items)
+      localStorage.setItem('items', json)
+    }
+    isMounted.current = true;
+  }, [items])
 
   return (
     <div className="header">

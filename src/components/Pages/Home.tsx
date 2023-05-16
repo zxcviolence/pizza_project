@@ -105,14 +105,14 @@ const Home: React.FC = () => {
       return false;
     })
     .map((obj: any) => (
-        <PizzaBlock {...obj} />
+        <PizzaBlock key={obj.id} {...obj} />
     ));
 
   return (
     <>
       <div className="content__top">
         <Categories value={categoryId} onChangeCategory={onChangeCategory} />
-        <Sort />
+        <Sort value={sort} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       {status === "error" ? (
