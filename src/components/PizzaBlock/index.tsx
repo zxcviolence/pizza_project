@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BasketItem, addItem, selectBasketItemById } from "../../features/basketSlice";
 import { Link } from "react-router-dom";
+import { BasketItem, addItem, selectBasketItemById } from "../../features/basketSlice";
 
 const typeNames = ["тонкое", "традиционное"];
 

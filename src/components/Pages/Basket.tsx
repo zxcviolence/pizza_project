@@ -1,14 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import BasketItem from "./BasketItem";
 import { clearItems, selectBasket } from "../../features/basketSlice";
 import BasketEmpty from "../BasketEmpty";
+import BasketItem from "./BasketItem";
 
 const Basket: React.FC = () => {
   const dispatch = useDispatch();
   const { items, totalPrice } = useSelector(selectBasket);
+
   const totalCount = items.reduce((sum: number, item: any) => sum + item.count, 0);
+
   const onClickClear = () => {
     if (window.confirm("Очистить корзину?")) {
       dispatch(clearItems());
@@ -93,7 +95,6 @@ const Basket: React.FC = () => {
                   stroke-linejoin="round"
                 />
               </svg>
-
               <span>Очистить корзину</span>
             </div>
           </div>
@@ -133,7 +134,6 @@ const Basket: React.FC = () => {
                     stroke-linejoin="round"
                   />
                 </svg>
-
                 <span>Вернуться назад</span>
               </Link>
               <div className="button pay-btn">

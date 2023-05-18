@@ -28,6 +28,7 @@ const BasketItemBlock: React.FC<BasketItemProps> = ({ id, title, size, type, pri
       dispatch(removeItem(id));
     }
   };
+  
   return (
     <div className="cart__item">
       <div className="cart__item-img">

@@ -1,6 +1,6 @@
 import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useParams, useNavigate } from "react-router-dom";
 
 const FullPizza: React.FC = () => {
   const { id } = useParams();
@@ -25,7 +25,7 @@ const FullPizza: React.FC = () => {
       }
     }
     getPizzas();
-  }, []);
+  }, [id, navigate]);
 
   if (!pizza) {
     return <>"Загрузка..."</>;

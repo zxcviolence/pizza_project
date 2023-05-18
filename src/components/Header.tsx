@@ -1,9 +1,9 @@
 import React from "react";
-import logoSVG from "../assets/img/pizza-logo.svg";
 import { Link } from "react-router-dom";
-import Search from "./Search/index";
 import { useSelector } from "react-redux";
 import { selectBasket } from "../features/basketSlice";
+import Search from "./Search/index";
+import logoSVG from "../assets/img/pizza-logo.svg";
 
 function Header() {
   const { items, totalPrice } = useSelector(selectBasket);
